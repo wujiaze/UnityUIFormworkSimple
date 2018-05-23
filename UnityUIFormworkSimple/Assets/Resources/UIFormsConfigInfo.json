@@ -1,0 +1,36 @@
+﻿{
+  "ConfigInfo": [
+    {
+      "Key": "本配置文件说明",
+      "Value": "UI窗体路径"
+    },
+    {
+      "Key": "LogonUIForm",
+      "Value": "UIPrefabs\\LogonUIForm"
+    },
+    {
+      "Key": "SelectHeroUIForm",
+      "Value": "UIPrefabs\\SelectHeroUIForm"
+    },
+    {
+      "Key": "HeroInfoUIForm",
+      "Value": "UIPrefabs\\HeroInfoUIForm"
+    },
+    {
+      "Key": "MainCityUIForm",
+      "Value": "UIPrefabs\\MainCityUIForm"
+    },
+    {
+      "Key": "MarketUIForm",
+      "Value": "UIPrefabs\\MarketUIForm"
+    },
+    {
+      "Key": "PropDetailUIForm",
+      "Value": "UIPrefabs\\PropDetailUIForm"
+    },
+    {
+      "Key": "BuyUIForm",
+      "Value": "UIPrefabs\\BuyUIForm"
+    }
+  ]
+}
