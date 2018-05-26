@@ -4,7 +4,11 @@
  *			    主题: UI管理器
  *		Description:
  *				功能:是整个UI框架的核心，用户通过本脚本，来实现框架绝大多数的功能实现
- *
+ *				
+ *				
+ *              本框架用法提示：
+ *                          1、CloseUIForm 用于关闭自身，OpenUIForm 可以打开任意UI窗体（也可以代替CloseUIForm）
+ *                          2、Json文件中的Key值、预设体名字 以及 脚本名字 以及 预设体自身的名字 最好一样
  *		Date: 2018.4.25
  *		Version: 0.1
  *		Modify Recoder:
@@ -25,9 +29,9 @@ namespace SimpleUIFramework
 	    private Dictionary<string, string> _dicFormsPaths;
         // 缓存所有UI窗体
 	    private Dictionary<string, UIFormBase> _dicAllUiForms;
-        // 当前显示的UI窗体(除了反向切换)
+        // 正在显示的UI窗体(除了反向切换)
 	    private Dictionary<string, UIFormBase> _dicCurrentShowUiForms;
-        // 定义“栈”集合，存储显示当前所有【反向切换】的窗体类型
+        // 定义“栈”集合，存储显示当前所有【反向切换】的窗体类型,显示的
 	    private Stack<UIFormBase> _stackCurrentUiForms;
         // UI根节点
 	    private Transform _traCanvasTransform = null;
@@ -39,7 +43,7 @@ namespace SimpleUIFramework
 	    private Transform _traPopUp = null;
         // UI管理脚本的节点
 	    private Transform _traUiScripts = null;
-
+        
         /// <summary>
         /// 得到实例
         /// </summary>
@@ -91,12 +95,9 @@ namespace SimpleUIFramework
 	            _dicFormsPaths = config.AppSetting;
 	    }
 
-        private void Update()
-        {
-            //print("所有窗体集合中的数量" + UIManager.GetInstance().ShowALLUIFormCount());
-            //print("当前窗体集合中的数量" + UIManager.GetInstance().ShowCurrentUIFormCount());
-            //print("栈窗体集合中的数量" + UIManager.GetInstance().ShowCurrentStackUIFormCount());
-        }
+
+        // 保存所有（显示和被隐藏的）窗体，用于“隐藏其他”窗体的回退操作
+        private List<UIFormBase> _allUIFormList =new List<UIFormBase>();
 
         /// <summary>
         /// 显示（打开）UI窗体
@@ -105,7 +106,7 @@ namespace SimpleUIFramework
         /// 2、根据不同的UI窗体的显示模式，分别做不同的加载处理
         /// </summary>
         /// <param name="uiFormName">UI窗体预设的名称</param>
-        public void ShowUIForms(string uiFormName)
+        public void ShowUIForm(string uiFormName)
         {
             UIFormBase baseUIForm = null;
             //参数的检查
@@ -113,43 +114,25 @@ namespace SimpleUIFramework
             //根据UI窗体的名称，加载到“所有UI窗体”缓存集合中，并且从 “所有UI窗体”缓存集合中 获取本窗体
             baseUIForm = LoadFormsToAllFormsCache(uiFormName);
             if (baseUIForm==null)return;
-
-            if (_dicCurrentShowUiForms.ContainsKey(uiFormName)) return; //当前显示的窗体中 已有需要显示的窗体，则返回（普通显示和隐藏其他）
-            if (_stackCurrentUiForms.Contains(baseUIForm)) return; //栈中已有需要显示的窗体 则返回（反向切换）
-
-            // 清空“栈集合”中的数据
-            if (baseUIForm.CurrentUiType.IsClearStack)
+            if (!_allUIFormList.Contains(baseUIForm))
             {
-                bool ClearResult = ClearStackArray();
-                if (!ClearResult)
-                {
-                    Debug.Log("栈中的数据没有清空，检查 uiFormName " + uiFormName);
-                }
+                // 最新的UI窗体(内存中不存在的窗体)
+                SimpleShow(uiFormName, baseUIForm);
             }
-
-            //根据不同的UI窗体的显示模式，分别做不同的加载处理
-            switch (baseUIForm.CurrentUiType.UIForms_ShowMode)
+            else
             {
-                // 将 窗体 加载到 _dicCurrentShowUiForms 中
-                case UIFormShowMode.Normal:         // 普通显示
-                    LoadUIToCurrentCache(uiFormName);
-                    break;
-                case UIFormShowMode.ReverseChange:  // 反向切换
-                    PushUIFormToStack(baseUIForm);
-                    break;
-                case UIFormShowMode.HideOther:      //隐藏其他
-                    EnterUIFormsAndHideOther(uiFormName);
-                    break;
+                // 已经显示过的UI（内存中还存在，只是隐藏了）
+                HandleReShowUI(uiFormName, baseUIForm);
             }
-            Debug.Log("_dicCurrentShowUiForms" + _dicCurrentShowUiForms.Count);
-            Debug.Log("_stackCurrentUiForms" + _stackCurrentUiForms.Count);
         }
 
+
         /// <summary>
-        /// 关闭指定窗体
+        /// 关闭指定(单个)窗体，重新显示之前的窗体
+        /// 关闭永远是按顺序从后往前关
         /// </summary>
         /// <param name="uiFormNAME">窗体名称</param>
-	    public void CloseUIForms(string uiFormName)
+	    public void CloseUIForm(string uiFormName)
         {
             UIFormBase baseUiForm=null;
             //参数的检查
@@ -157,10 +140,12 @@ namespace SimpleUIFramework
             // _dicAllUiForms 中，如果没有记录，则直接返回(即关闭一个不存在的窗体)
             _dicAllUiForms.TryGetValue(uiFormName, out baseUiForm);
             if (baseUiForm==null)return;
-
+            // 从所有的 内存 窗体中，删除需要关闭的
+            _allUIFormList.RemoveAt(_allUIFormList.Count - 1);
             // 根据窗体不同的显示类型，分别做不同的关闭处理
             switch (baseUiForm.CurrentUiType.UIForms_ShowMode)
             {
+                // 将 窗体 从 _dicCurrentShowUiForms 中移除
                 case UIFormShowMode.Normal:
                     // 普通窗体的关闭
                     ExitUIForms(uiFormName);
@@ -170,19 +155,13 @@ namespace SimpleUIFramework
                     PopUIForm(uiFormName);
                     break;
                 case UIFormShowMode.HideOther:
-                    // 隐藏其他关闭
+                    // 隐藏其他的关闭
                     ExitUIFormsAndHideOther(uiFormName);
                     break;
             }
-            Debug.Log("_dicCurrentShowUiForms" + _dicCurrentShowUiForms.Count);
-            Debug.Log("_stackCurrentUiForms" + _stackCurrentUiForms.Count);
         }
-
-
-
-	   
-
-
+        
+       
         #region 私有内部方法
 
         /// <summary>
@@ -208,6 +187,7 @@ namespace SimpleUIFramework
                 foreach (UIFormBase item in _stackCurrentUiForms)
                 {
                     item.Hiding();
+                    _allUIFormList.Remove(item);
                 }
                 // 清空栈集合
                 _stackCurrentUiForms.Clear();
@@ -276,18 +256,22 @@ namespace SimpleUIFramework
                         break;
                 }
                 //3、显示刚创建的UI克隆体
-                goCloneUIPrefabs.SetActive(true); // 这个地方坑你需要改成false，碰到问题了再说 ？？
+                goCloneUIPrefabs.SetActive(true);   // 这个地方坑你需要改成false，碰到问题了再说 ？？
                 //4、把克隆体加入到 _dicAllUiForms 中
                 _dicAllUiForms.Add(uiFormName, baseUiForm);
                 return baseUiForm;
             }
             else
             {
-                Debug.Log("_traCanvasTransform = null Or  goCloneUIPrefabs = null" + uiFormName);
+                Debug.Log("_traCanvasTransform = null Or  goCloneUIPrefabs = null " + uiFormName);
                 return null;
             }
 
         }
+
+
+
+
 
         /// <summary>
         /// 把当前窗体加载到 _dicCurrentShowUiForms 中
@@ -301,7 +285,6 @@ namespace SimpleUIFramework
             if (baseUIFormFromAllCache != null)
             {
                 _dicCurrentShowUiForms.Add(uiFormName, baseUIFormFromAllCache);
-
                 baseUIFormFromAllCache.Display();  //显示当前窗体
             }
             else
@@ -412,11 +395,11 @@ namespace SimpleUIFramework
                 // 隐藏处理
                 topUiForm.Hiding();
             }
-           
+          
         }
-
+	    #endregion
         /// <summary>
-        /// 关闭"隐藏其他属性"的窗体，且显示其他所有窗体 // todo zhexuyao改变一下
+        /// 关闭"隐藏其他属性"的窗体，且显示其他所有窗体 
         /// </summary>
         /// <param name="uiFormName">需要关闭的窗体名称</param>
         private void ExitUIFormsAndHideOther(string uiFormName)
@@ -429,50 +412,106 @@ namespace SimpleUIFramework
             // 隐藏当前窗体，并且在 _dicCurrentShowUiForms 中移除
             baseUiForm.Hiding();
             _dicCurrentShowUiForms.Remove(uiFormName);
+            // 重新按顺序显示隐藏其他之前的UI窗体
+            JustShowUI();
+        }
 
-            // todo zhexuyao改变一下
-            // 把  _dicCurrentShowUiForms 中所有的窗体都显示
-            foreach (UIFormBase uiForm in _dicCurrentShowUiForms.Values)
+
+
+
+	    private void SimpleShow(string uiFormName,UIFormBase baseUIForm)
+	    {
+	        _allUIFormList.Add(baseUIForm);
+            // 清空“栈集合”中的数据
+            if (baseUIForm.CurrentUiType.IsClearStack)
+	        {
+	            bool ClearResult = ClearStackArray();
+	            if (!ClearResult)
+	            {
+	                Debug.Log("栈中的数据没有清空，检查 uiFormName " + uiFormName);
+	            }
+	        }
+	        //根据不同的UI窗体的显示模式，分别做不同的加载处理
+	        switch (baseUIForm.CurrentUiType.UIForms_ShowMode)
+	        {
+	            // 将 窗体 加载到 _dicCurrentShowUiForms 中
+	            case UIFormShowMode.Normal:         // 普通显示
+	                LoadUIToCurrentCache(uiFormName);
+	                break;
+	            case UIFormShowMode.ReverseChange:  // 反向切换
+	                PushUIFormToStack(baseUIForm);
+	                break;
+	            case UIFormShowMode.HideOther:      //隐藏其他
+	                EnterUIFormsAndHideOther(uiFormName);
+	                break;
+	        }
+        }
+
+	    /// <summary>
+        /// 处理重新显示（隐藏的并且内存中存在的)UI窗体
+        /// </summary>
+	    private void HandleReShowUI(string uiFormName, UIFormBase baseUIForm)
+	    {
+	        // 当前显示的窗体中 已有需要显示的窗体,类似于重新打开，那就回到最开始，重新按顺序显示
+	        if (_dicCurrentShowUiForms.ContainsKey(uiFormName) || _stackCurrentUiForms.Contains(baseUIForm) && _allUIFormList.Count > 0)
+	        {
+	            while (_allUIFormList[_allUIFormList.Count - 1] != baseUIForm)
+	            {
+	                UIFormBase tmpUI = _allUIFormList[_allUIFormList.Count - 1];
+	               
+                    // 根据这个UI类型关闭自身
+                    CloseUIForm(tmpUI.name);
+	            }
+                // 循环结束，说明已经显示了需要的UI窗体
+	        }
+        }
+
+	    /// <summary>
+        /// 显示存在于_dicCurrentShowUiForms和 _stackCurrentUiForms 中的窗体，按照原来的顺序
+        /// </summary>
+        /// <param name="uiFormName"></param>
+        private void JustShowUI()
+        {
+            if (_allUIFormList.Count == 0) return;
+            List<UIFormBase> tmplist = new List<UIFormBase>();
+            // 从头开始显示
+            foreach (UIFormBase uiForm in _allUIFormList)
             {
-                Debug.Log(uiForm.name);
-                switch (uiForm.CurrentUiType.UIForms_ShowMode)
+                UIFormBase baseUIForm = _dicAllUiForms[uiForm.name];
+                //根据不同的UI窗体的显示模式，分别做不同的显示处理
+                switch (baseUIForm.CurrentUiType.UIForms_ShowMode)
                 {
                     // 将 窗体 加载到 _dicCurrentShowUiForms 中
                     case UIFormShowMode.Normal:         // 普通显示
-                        uiForm.ReDisplay();  //显示当前窗体
+                        baseUIForm.Display();       //显示当前窗体
+                        tmplist.Add(baseUIForm);
+                        break;
+                    case UIFormShowMode.ReverseChange:  // 反向切换
+                        if (_stackCurrentUiForms.Peek() == baseUIForm)
+                        {
+                            baseUIForm.Display();
+                        }
+                        else
+                        {
+                            baseUIForm.Freeze();
+                        }
+                        tmplist.Add(baseUIForm);
                         break;
                     case UIFormShowMode.HideOther:      //隐藏其他
-                        foreach (UIFormBase baseuiForm in _dicCurrentShowUiForms.Values)
+                        foreach (UIFormBase item in tmplist)
                         {
-                            baseuiForm.Hiding();
+                            item.Hiding();
                         }
-                        foreach (UIFormBase baseuiForm in _stackCurrentUiForms)
-                        {
-                            baseuiForm.Hiding();
-                        }
-                        uiForm.ReDisplay();
+                        baseUIForm.Display();
+                        tmplist.Clear();
                         break;
                 }
-            }
-
-            //  _stackCurrentUiForms 中所有的窗体都按顺序显示
-            // 注意：根据Canvas中的顺序，栈中的窗体也要后重新显示
-            Stack<UIFormBase> tempStack = new Stack<UIFormBase>();
-            foreach (UIFormBase uiForm in _stackCurrentUiForms)
-            {
-                tempStack.Push(uiForm);
-            }
-            // 这就、样就仿佛是重新打开了一遍
-            foreach (UIFormBase uiForm in tempStack)
-            {
-                uiForm.ReDisplay();
             }
 
         }
 
 
-
-        #endregion
+       
 
         #region 显示“UI管理器”内部核心数据，供测试使用
 
@@ -521,6 +560,44 @@ namespace SimpleUIFramework
                 return 0;
             }
         }
+        /// <summary>
+        /// 显示 当前内存中的 UI窗体数量
+        /// </summary>
+        /// <returns></returns>
+	    public int ShowCurrentListUIFormCount()
+	    {
+	        if (_allUIFormList != null)
+	        {
+	            return _allUIFormList.Count;
+	        }
+	        else
+	        {
+	            return 0;
+	        }
+	    }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("所有加载过的UI窗体的数量: " + ShowALLUIFormCount());
+                Debug.Log("正常或隐藏其他UI窗体在内存中的数量： " + ShowCurrentUIFormCount());
+                foreach (string item in _dicCurrentShowUiForms.Keys)
+                {
+                    Debug.Log(item);
+                }
+                Debug.Log("反向切换UI窗体在内存中的数量： " + ShowCurrentStackUIFormCount());
+                foreach (UIFormBase item in _stackCurrentUiForms)
+                {
+                    Debug.Log(item.name);
+                }
+                Debug.Log("所有UI窗体 内存中的数量： " + ShowCurrentListUIFormCount());
+                foreach (UIFormBase item in _allUIFormList)
+                {
+                    Debug.Log(item.name);
+                }
+            }
+        }
+
 
         #endregion
 

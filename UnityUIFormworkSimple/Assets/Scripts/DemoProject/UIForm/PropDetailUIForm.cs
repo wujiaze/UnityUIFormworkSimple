@@ -25,7 +25,7 @@ namespace DemoProject
 	        CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Translucence;
 	        CurrentUiType.UIForms_ShowMode = UIFormShowMode.ReverseChange;
 	        CurrentUiType.UIForms_Type = UIFormsType.PopUp;
-	        CurrentUiType.IsClearStack = false;
+            CurrentUiType.IsClearStack = false;
             /* 按钮注册 */
             RigisterButtonObjectEvent("Btn_Close", () => CloseUIForm());
             RigisterButtonObjectEvent("Btn_Buy", () => { OpenUIForm("BuyUIForm"); });

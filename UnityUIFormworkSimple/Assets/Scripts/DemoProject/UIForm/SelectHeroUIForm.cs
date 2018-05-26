@@ -30,7 +30,7 @@ namespace DemoProject
             RigisterButtonObjectEvent("BtnConfirm", () =>
             {
                 // 顺序不能换
-                OpenUIForm(ProjectConfig.MAIN_CITY_FORM);
+                OpenUIForm(ProjectConfig.MAIN_CITY_FORM); // 因为这个是Hideother属性
                 OpenUIForm(ProjectConfig.HERO_INFO_FORM);
             });
             // 给按钮注册事件：返回登录

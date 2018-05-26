@@ -8,6 +8,7 @@
  *              2、Hiding    隐藏状态
  *              3、ReDisplay 再显示状态
  *              4、Freeze    冻结状态
+ *              
  *		Date: 2018.4.25
  *		Version: 0.1
  *		Modify Recoder:
@@ -93,23 +94,16 @@ namespace SimpleUIFramework
         /// <param name="uiFormName">窗体名称</param>
 	    protected void OpenUIForm(string uiFormName)
 	    {
-	        UIManager.GetInstance().ShowUIForms(uiFormName);
+	        UIManager.GetInstance().ShowUIForm(uiFormName);
 	    }
 
         /// <summary>
         /// 关闭当前UI窗体
         /// 因为关闭是关闭自己，所以可以用反射来获取自己的类名，而类名又和窗体名称一致，所以可以这样取巧
         /// </summary>
-	    protected void CloseUIForm(string uiFormName=null)
+	    protected void CloseUIForm()
         {
-            if (uiFormName == null)
-            {
-                UIManager.GetInstance().CloseUIForms(GetType().Name);
-            }
-            else
-            {
-                UIManager.GetInstance().CloseUIForms(uiFormName);
-            }
+            UIManager.GetInstance().CloseUIForm(GetType().Name);
         }
 
        

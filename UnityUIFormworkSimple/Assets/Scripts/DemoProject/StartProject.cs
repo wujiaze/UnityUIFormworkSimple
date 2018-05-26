@@ -20,7 +20,7 @@ namespace DemoProject
 	{
 	    void Start()
 	    {
-	        UIManager.GetInstance().ShowUIForms(ProjectConfig.LOGON_FORM);
+	        UIManager.GetInstance().ShowUIForm(ProjectConfig.LOGON_FORM);
             DontDestroyOnLoad(this);
 	        for (int i = 0; i < 50; i++)
 	        {

@@ -31,9 +31,9 @@ namespace DemoProject
 	        CurrentUiType.UIForms_ShowMode = UIFormShowMode.Normal;
 	        CurrentUiType.UIForms_Type = UIFormsType.Normal;
 	        CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Lucency;
-	        CurrentUiType.IsClearStack = false;
+            CurrentUiType.IsClearStack = false;
             // 给按钮注册事件：登入游戏
-	        RigisterButtonObjectEvent("Btn_OK", LogonSys);
+            RigisterButtonObjectEvent("Btn_OK", LogonSys);
             // 给下拉框注册事件 
 	        RigisterDropDownObjectEvent("DropLanguage", LanguageIndex);
 	    }
