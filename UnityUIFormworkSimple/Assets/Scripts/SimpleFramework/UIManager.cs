@@ -106,14 +106,14 @@ namespace SimpleUIFramework
         /// 2、根据不同的UI窗体的显示模式，分别做不同的加载处理
         /// </summary>
         /// <param name="uiFormName">UI窗体预设的名称</param>
-        public void ShowUIForm(string uiFormName)
+        public bool ShowUIForm(string uiFormName)
         {
             UIFormBase baseUIForm = null;
             //参数的检查
-            if (string.IsNullOrEmpty(uiFormName)) return;  // 参数错误返回
+            if (string.IsNullOrEmpty(uiFormName)) return false;  // 参数错误返回
             //根据UI窗体的名称，加载到“所有UI窗体”缓存集合中，并且从 “所有UI窗体”缓存集合中 获取本窗体
             baseUIForm = LoadFormsToAllFormsCache(uiFormName);
-            if (baseUIForm==null)return;
+            if (baseUIForm==null)return false;
             if (!_allUIFormList.Contains(baseUIForm))
             {
                 // 最新的UI窗体(内存中不存在的窗体)
@@ -124,6 +124,7 @@ namespace SimpleUIFramework
                 // 已经显示过的UI（内存中还存在，只是隐藏了）
                 HandleReShowUI(uiFormName, baseUIForm);
             }
+            return true;
         }
 
 
@@ -132,14 +133,14 @@ namespace SimpleUIFramework
         /// 关闭永远是按顺序从后往前关
         /// </summary>
         /// <param name="uiFormNAME">窗体名称</param>
-	    public void CloseUIForm(string uiFormName)
+	    public bool CloseUIForm(string uiFormName)
         {
             UIFormBase baseUiForm=null;
             //参数的检查
-	        if (string.IsNullOrEmpty(uiFormName)) return;  // 参数错误返回
+	        if (string.IsNullOrEmpty(uiFormName)) return false;  // 参数错误返回
             // _dicAllUiForms 中，如果没有记录，则直接返回(即关闭一个不存在的窗体)
             _dicAllUiForms.TryGetValue(uiFormName, out baseUiForm);
-            if (baseUiForm==null)return;
+            if (baseUiForm==null)return false;
             // 从所有的 内存 窗体中，删除需要关闭的
             _allUIFormList.RemoveAt(_allUIFormList.Count - 1);
             // 根据窗体不同的显示类型，分别做不同的关闭处理
@@ -159,6 +160,7 @@ namespace SimpleUIFramework
                     ExitUIFormsAndHideOther(uiFormName);
                     break;
             }
+            return true;
         }
         
        
