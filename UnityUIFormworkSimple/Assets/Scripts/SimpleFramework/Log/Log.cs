@@ -34,7 +34,7 @@ namespace SimpleUIFramework
         Speacial,                                                          //指定输出模式
         Deploy,                                                            //部署模式（只输出最核心日志信息，例如严重错误信息，用户登陆账号等）
         Stop                                                               //停止输出模式（不输出任何日志信息）
-    };
+    }
 
     /// <summary>
     /// 调试信息的等级（表示调试信息本身的重要程度）
@@ -89,7 +89,6 @@ namespace SimpleUIFramework
         /// </summary>
         static Log()
         {
-
             //日志缓存数据
             _TempLogArray = new List<string>();
 
