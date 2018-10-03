@@ -27,13 +27,12 @@ namespace SimpleUIFramework
 	public class UIFormBase : MonoBehaviour 
 	{
         /*字段*/
-        private UIType _CurrentUiType =new UIType();
+        private UIType _uiType =new UIType();
         /*属性*/
         // 当前UI窗体类型
         public UIType CurrentUiType
 	    {
-	        get { return _CurrentUiType; }
-	        set { _CurrentUiType = value; }
+	        get { return _uiType; }
 	    }
 
         #region 窗体生命周期（状态）
@@ -45,9 +44,9 @@ namespace SimpleUIFramework
 	    {
 	        gameObject.SetActive(true);
             // 设置模态窗体调用（必须是弹出窗体）
-	        if (_CurrentUiType.UIForms_Type == UIFormsType.PopUp)
+	        if (_uiType.UiFormsType == UIFormsType.PopUp)
 	        {
-	            UiMaskManager.GetInstance().SetMaskForm(this.gameObject, _CurrentUiType.UIForms_LucencyType);
+	            UiMaskManager.Instance.SetMaskForm(this.gameObject, _uiType.UiFormsLucencyType);
 	        }
 	    }
 
@@ -58,9 +57,9 @@ namespace SimpleUIFramework
 	    {
 	        gameObject.SetActive(false);
 	        // 设置模态窗体调用（必须是弹出窗体）
-	        if (_CurrentUiType.UIForms_Type == UIFormsType.PopUp)
+	        if (_uiType.UiFormsType == UIFormsType.PopUp)
 	        {
-	            UiMaskManager.GetInstance().CancelMaskForm(this.gameObject);
+	            UiMaskManager.Instance.CancelMaskForm(this.gameObject);
 	        }
         }
 
@@ -71,9 +70,9 @@ namespace SimpleUIFramework
 	    {
 	        gameObject.SetActive(true);
 	        // 设置模态窗体调用（必须是弹出窗体）
-	        if (_CurrentUiType.UIForms_Type == UIFormsType.PopUp)
+	        if (_uiType.UiFormsType == UIFormsType.PopUp)
 	        {
-	            UiMaskManager.GetInstance().SetMaskForm(this.gameObject, _CurrentUiType.UIForms_LucencyType);
+	            UiMaskManager.Instance.SetMaskForm(this.gameObject, _uiType.UiFormsLucencyType);
 	        }
         }
 	    /// <summary>
@@ -85,6 +84,8 @@ namespace SimpleUIFramework
 	    }
         #endregion
 
+
+
         #region 封装子类常用的方法
 
        
@@ -92,42 +93,44 @@ namespace SimpleUIFramework
         /// 打开UI窗体
         /// </summary>
         /// <param name="uiFormName">窗体名称</param>
-	    protected void OpenUIForm(string uiFormName)
+	    protected void ShowUiForm(string uiFormName)
 	    {
-	        UIManager.GetInstance().ShowUIForm(uiFormName);
+	        UIManager.Instance.ShowUiForm(uiFormName);
 	    }
 
         /// <summary>
         /// 关闭当前UI窗体
         /// 因为关闭是关闭自己，所以可以用反射来获取自己的类名，而类名又和窗体名称一致，所以可以这样取巧
         /// </summary>
-	    protected void CloseUIForm()
+	    protected void CloseUiForm()
         {
-            UIManager.GetInstance().CloseUIForm(GetType().Name);
+            UIManager.Instance.CloseUiForm(GetType().Name);
         }
 
+        /* 有需啊哟还可以自行添加 */
        
         /// <summary>
         /// 注册按钮事件,简化了寻找路径
         /// </summary>
-        /// <param name="ButtonName">按钮名称</param>
+        /// <param name="buttonName">按钮名称</param>
         /// <param name="delHandle">委托事件</param>
-	    protected void RigisterButtonObjectEvent(string ButtonName, UnityAction delHandle)
+	    protected void RigisterButtonObjectEvent(string buttonName, UnityAction delHandle)
         {
-            Button btn = UnityHelper.FindTheChildNode(this.gameObject, ButtonName).GetComponent<Button>();
+            Button btn = UnityHelper.FindTheChildNode(this.gameObject, buttonName).GetComponent<Button>();
             if (btn != null)
             {
                 btn.onClick.AddListener(delHandle);
             }
         }
+
         /// <summary>
         /// 注册下拉框事件
         /// </summary>
-        /// <param name="ButtonName">按钮名称</param>
+        /// <param name="dropName">按钮名称</param>
         /// <param name="delHandle">委托事件</param>
-        protected void RigisterDropDownObjectEvent(string DropName, UnityAction<int> delHandle)
+        protected void RigisterDropDownObjectEvent(string dropName, UnityAction<int> delHandle)
         {
-            Dropdown drop = UnityHelper.FindTheChildNode(this.gameObject, DropName).GetComponent<Dropdown>();
+            Dropdown drop = UnityHelper.FindTheChildNode(this.gameObject, dropName).GetComponent<Dropdown>();
             if (drop != null)
             {
                 drop.onValueChanged.AddListener(delHandle);
@@ -137,16 +140,15 @@ namespace SimpleUIFramework
 
 
         /* 语言国际化 */
-        protected LanguageManager mgr = LanguageManager.GetInstance();
+        protected LanguageManager mgr = LanguageManager.Instance;
         /// <summary>
         /// 显示语言 
         /// </summary>
         /// <param name="languageId">语言的ID</param>
-        /// <param name="type">语言的类型</param>
         /// <returns></returns>
 	    protected string ShowText(string languageId)
-	    {
-	        string strResult =String.Empty;
+        {
+            string strResult;
 	        strResult = mgr.ShowCurrentText(languageId);
 	        return strResult;
 	    }
@@ -159,6 +161,7 @@ namespace SimpleUIFramework
 	    {
             mgr.SetLanguageType(type);
 	    }
+
 
         /* 不使用MVC框架时，用来传递UI之间的消息 */
         /// <summary>

@@ -19,36 +19,39 @@ namespace SimpleUIFramework
 	public class ConfigManagerByJson : IConfigManager
 	{
         // 保存（键值对）应用设置集合
-	    private static Dictionary<string, string> _AppSetting;
+	    private static Dictionary<string, string> _appSetting;
         /// <summary>
         /// 只读属性：得到应用设置
         /// </summary>
         public Dictionary<string, string> AppSetting
         {
-            get { return _AppSetting; }
+            get { return _appSetting; }
         }
 
-	    public ConfigManagerByJson(string jsonPath)
+        public ConfigManagerByJson(string jsonPath)
 	    {
-	        _AppSetting =new Dictionary<string, string>();
+	        _appSetting =new Dictionary<string, string>();
             // 初始化解析 Json 数据，加载到集合
 	        InitAndAnalysisJson(jsonPath);
 	    }
+
+       
+
         /// <summary>
         /// 得到AppSetting的最大数值
         /// </summary>
         /// <returns></returns>
         public int GetAppSettingMaxNumber()
-	    {
-	        if (_AppSetting != null && _AppSetting.Count > 0)
-	        {
-	            return _AppSetting.Count;
-	        }
-	        return 0;
-	    }
+        {
+            if (_appSetting != null && _appSetting.Count > 0)
+            {
+                return _appSetting.Count;
+            }
+            return 0;
+        }
 
         /// <summary>
-        /// 初始化解析 Json 数据，加载到 _AppSetting 字典
+        /// 初始化解析 Json 数据，加载到 _appSetting 字典
         /// </summary>
         /// <param name="jsonPath"></param>
 	    private void InitAndAnalysisJson(string jsonPath)
@@ -68,10 +71,10 @@ namespace SimpleUIFramework
 	           // 自定义异常
                throw new JsonAnalysisException(GetType()+ "/InitAndAnalysisJson()/ Exception! jsonpath ="+ jsonPath);
 	        }
-            // 数据加载到 _AppSetting 字典中
+            // 数据加载到 _appSetting 字典中
             foreach (KeyValueNode nodeInfo in keyValueInfo.ConfigInfo)
 	        {
-	            _AppSetting.Add(nodeInfo.Key, nodeInfo.Value);
+	            _appSetting.Add(nodeInfo.Key, nodeInfo.Value);
             }
 	    }
 

@@ -28,9 +28,9 @@ namespace DemoProject
 	    public void Awake()
 	    {
 	        // 定义本窗体的性质(默认值可以不写)
-	        CurrentUiType.UIForms_ShowMode = UIFormShowMode.Normal;
-	        CurrentUiType.UIForms_Type = UIFormsType.Normal;
-	        CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Lucency;
+	        CurrentUiType.UiFormsShowMode = UIFormShowMode.Normal;
+	        CurrentUiType.UiFormsType = UIFormsType.Normal;
+	        CurrentUiType.UiFormsLucencyType = UIFormLucenyType.Lucency;
             CurrentUiType.IsClearStack = false;
             // 给按钮注册事件：登入游戏
             RigisterButtonObjectEvent("Btn_OK", LogonSys);
@@ -42,7 +42,7 @@ namespace DemoProject
 	    {
 	        // 前台或后台检测用户名与密码 
 	        // 如果成功，则登录
-	        OpenUIForm(ProjectConfig.SELECT_HERO_FORM);
+	        ShowUiForm(ProjectConfig.SELECT_HERO_FORM);
 	    }
 
 

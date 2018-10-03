@@ -22,13 +22,13 @@ namespace DemoProject
 	    public Text TxtName; // 窗体显示名称
 	    void Awake()
 	    {
-	        CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Translucence;
-	        CurrentUiType.UIForms_ShowMode = UIFormShowMode.ReverseChange;
-	        CurrentUiType.UIForms_Type = UIFormsType.PopUp;
+	        CurrentUiType.UiFormsLucencyType = UIFormLucenyType.Translucence;
+	        CurrentUiType.UiFormsShowMode = UIFormShowMode.ReverseChange;
+	        CurrentUiType.UiFormsType = UIFormsType.PopUp;
             CurrentUiType.IsClearStack = false;
             /* 按钮注册 */
-            RigisterButtonObjectEvent("Btn_Close", () => CloseUIForm());
-            RigisterButtonObjectEvent("Btn_Buy", () => { OpenUIForm("BuyUIForm"); });
+            RigisterButtonObjectEvent("Btn_Close", () => CloseUiForm());
+            RigisterButtonObjectEvent("Btn_Buy", () => { ShowUiForm("BuyUIForm"); });
             /* 接收信息：注册成监听者 */
             ReceiveMessage("Props", (kv) =>
 	        {

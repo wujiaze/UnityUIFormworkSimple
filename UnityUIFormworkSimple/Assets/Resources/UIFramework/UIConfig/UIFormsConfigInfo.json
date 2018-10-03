@@ -6,31 +6,31 @@
     },
     {
       "Key": "LogonUIForm",
-      "Value": "UIPrefabs/LogonUIForm"
+      "Value": "UIFramework/UIPrefabs/LogonUIForm"
     },
     {
       "Key": "SelectHeroUIForm",
-      "Value": "UIPrefabs/SelectHeroUIForm"
+      "Value": "UIFramework/UIPrefabs/SelectHeroUIForm"
     },
     {
       "Key": "HeroInfoUIForm",
-      "Value": "UIPrefabs/HeroInfoUIForm"
+      "Value": "UIFramework/UIPrefabs/HeroInfoUIForm"
     },
     {
       "Key": "MainCityUIForm",
-      "Value": "UIPrefabs/MainCityUIForm"
+      "Value": "UIFramework/UIPrefabs/MainCityUIForm"
     },
     {
       "Key": "MarketUIForm",
-      "Value": "UIPrefabs/MarketUIForm"
+      "Value": "UIFramework/UIPrefabs/MarketUIForm"
     },
     {
       "Key": "PropDetailUIForm",
-      "Value": "UIPrefabs/PropDetailUIForm"
+      "Value": "UIFramework/UIPrefabs/PropDetailUIForm"
     },
     {
       "Key": "BuyUIForm",
-      "Value": "UIPrefabs/BuyUIForm"
+      "Value": "UIFramework/UIPrefabs/BuyUIForm"
     }
 
   ]

@@ -54,7 +54,7 @@ namespace SimpleUIFramework
             searchTransformNode = FindTheChildNode(goParent, childName);
             if (searchTransformNode != null)
             {
-                return searchTransformNode.gameObject.GetComponent<T>();
+                return searchTransformNode.GetComponent<T>();
             }
             return null;
         }

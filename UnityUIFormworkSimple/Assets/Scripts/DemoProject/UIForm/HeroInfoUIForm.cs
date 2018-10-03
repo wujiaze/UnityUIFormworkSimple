@@ -21,9 +21,9 @@ namespace DemoProject
         private void Awake()
         {
             // 窗体性质
-            CurrentUiType.UIForms_ShowMode = UIFormShowMode.Normal;
-            CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Lucency;
-            CurrentUiType.UIForms_Type = UIFormsType.Fixed;
+            CurrentUiType.UiFormsShowMode = UIFormShowMode.Normal;
+            CurrentUiType.UiFormsLucencyType = UIFormLucenyType.Lucency;
+            CurrentUiType.UiFormsType = UIFormsType.Fixed;
             // 注册事件
         }
 

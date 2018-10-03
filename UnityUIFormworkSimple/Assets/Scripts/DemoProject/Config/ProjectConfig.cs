@@ -17,7 +17,7 @@ namespace DemoProject
     public class ProjectConfig
     {
         /* 常量定义名称 */
-        public const int SYS_LANGUAGE = (int)LanguageType.EN;
+        public const int SYS_LANGUAGE = (int)LanguageType.En;
         /* UI窗体名称 */
         public const string LOGON_FORM = "LogonUIForm";
         public const string SELECT_HERO_FORM = "SelectHeroUIForm";

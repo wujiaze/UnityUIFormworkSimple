@@ -20,13 +20,21 @@ namespace DemoProject
 	{
 	    void Start()
 	    {
-	        UIManager.GetInstance().ShowUIForm(ProjectConfig.LOGON_FORM);
-            DontDestroyOnLoad(this);
-	        for (int i = 0; i < 50; i++)
-	        {
-	            Log.Write("测试Log", Level.High);
+	        UIManager.Instance.ShowUiForm(ProjectConfig.LOGON_FORM);
+	        //for (int i = 0; i < 50; i++)
+	        //{
+	        //    Log.Write("测试Log", Level.High);
+            //}
+	    }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                UIManager.Instance.ShowUiForm(ProjectConfig.LOGON_FORM);
             }
             
-	    }
-	}
+        }
+
+    }
 }

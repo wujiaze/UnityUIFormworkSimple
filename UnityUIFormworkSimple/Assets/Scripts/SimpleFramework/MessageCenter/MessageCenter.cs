@@ -12,6 +12,7 @@
  *
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace SimpleUIFramework
@@ -24,7 +25,7 @@ namespace SimpleUIFramework
         ///  消息中心缓存集合
         /// string:数据大的分类 DelMessageDelivery:数据执行委托
         /// </summary>
-        public static Dictionary<string, DelMessageDelivery> _dicMessages =new Dictionary<string, DelMessageDelivery>();
+        private static Dictionary<string, DelMessageDelivery> _dicMessages =new Dictionary<string, DelMessageDelivery>();
 
         /// <summary>
         /// 添加消息的监听 
@@ -73,8 +74,10 @@ namespace SimpleUIFramework
         public static void SendMessage(string messageType, KeyValueUpdate kv)
         {
             DelMessageDelivery del = null;
-            if (!_dicMessages.TryGetValue(messageType,out del))return;
-            if (del != null) del(kv); // 调用委托
+            if (!_dicMessages.TryGetValue(messageType,out del))
+                return;
+            if (del != null)
+                del(kv); // 调用委托
         }
     }
 

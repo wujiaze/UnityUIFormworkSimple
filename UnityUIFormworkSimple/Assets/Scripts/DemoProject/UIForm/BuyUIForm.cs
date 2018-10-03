@@ -18,11 +18,11 @@ namespace SimpleUIFramework
 
         private void Awake()
         {
-            CurrentUiType.UIForms_LucencyType = UIFormLucenyType.ImPenetrable;
-            CurrentUiType.UIForms_ShowMode = UIFormShowMode.ReverseChange;
-            CurrentUiType.UIForms_Type = UIFormsType.PopUp;
+            CurrentUiType.UiFormsLucencyType = UIFormLucenyType.ImPenetrable;
+            CurrentUiType.UiFormsShowMode = UIFormShowMode.ReverseChange;
+            CurrentUiType.UiFormsType = UIFormsType.PopUp;
             CurrentUiType.IsClearStack = false;
-            RigisterButtonObjectEvent("Btn_Close",() => CloseUIForm());
+            RigisterButtonObjectEvent("Btn_Close",() => CloseUiForm());
         }
             
     }

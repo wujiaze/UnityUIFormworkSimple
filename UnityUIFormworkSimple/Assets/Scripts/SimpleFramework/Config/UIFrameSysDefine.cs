@@ -19,24 +19,6 @@ namespace SimpleUIFramework
 {
     #region UI系统枚举类型
     /// <summary>
-    /// UI窗体(位置)类型
-    /// </summary>
-    public enum UIFormsType
-    {
-        /// <summary>
-        /// 普通窗体(全屏窗体)
-        /// </summary>
-        Normal,
-        /// <summary>
-        /// 固定窗体（非全屏窗体）
-        /// </summary>
-        Fixed,
-        /// <summary>
-        /// 弹出窗体
-        /// </summary>
-        PopUp
-    }
-    /// <summary>
     /// UI窗体的显示类型
     /// </summary>
     public enum UIFormShowMode
@@ -54,6 +36,25 @@ namespace SimpleUIFramework
         /// </summary>
         HideOther
     }
+    /// <summary>
+    /// UI窗体(位置)类型
+    /// </summary>
+    public enum UIFormsType
+    {
+        /// <summary>
+        /// 普通窗体(全屏窗体)
+        /// </summary>
+        Normal,
+        /// <summary>
+        /// 固定窗体（非全屏窗体）
+        /// </summary>
+        Fixed,
+        /// <summary>
+        /// 弹出窗体
+        /// </summary>
+        PopUp
+    }
+
     /// <summary>
     /// UI窗体透明度类型  
     /// 功能:只对 PopUp 窗体有效，其余窗体随意都可以
@@ -83,11 +84,18 @@ namespace SimpleUIFramework
     public class UIFrameSysDefine : MonoBehaviour
     {
         /* 路径常量 */
-        public const string SYS_PATH_CANVAS = "Canvas";
-        public const string SYS_PATH_UIFORMS_CONFIG_INFO = "UIFormsConfigInfo";
+        public const string UIFRAMEWORK = "UIFramework";
+        public const string UIPREFAB = "/UIPrefabs/";
+        public const string UICONFIG = "/UIConfig/";
+        public const string CANVAS = "UICanvas";
+        public const string SYS_PATH_CANVAS = UIFRAMEWORK + UIPREFAB + CANVAS;
+        public const string SYS_PATH_UIFORMS_CONFIG_INFO = UIFRAMEWORK + UICONFIG + "UIFormsConfigInfo";
+
+        public const string LANGUAGE = "/Language/";
+        public const string PATH_LANGUAGE_CN = UIFRAMEWORK + LANGUAGE + "LauguageJSONConfig_CN";
+        public const string PATH_LANGUAGE_EN = UIFRAMEWORK + LANGUAGE + "LauguageJSONConfig_EN";
+
         public const string SYS_PATN_LOG_CONFIG_INFO = "SysLogConfigInfo";
-        public const string PATH_LANGUAGE_CN = "LauguageJSONConfig_CN";
-        public const string PATH_LANGUAGE_EN = "LauguageJSONConfig";
         /* 标签常量 */
         public const string SYS_TAG_CANVAS = "_TagCanvas";
         /* 节点常量 */
@@ -105,8 +113,8 @@ namespace SimpleUIFramework
         public const float SYS_UIMASK_IMPENETRABLE_COLOR_RGB_A = 200 / 255F;
         /* 摄像机层深常量 */
         public const string SYS_UICAMERA_NODE = "UICamera";
-        public const int SYS_UICAMERA_DEPTH =100;
+        public const int SYS_UICAMERA_DEPTH = 100;
         /* 全局性的方法 */
         /* 委托的定义 */
     }
-} 
+}

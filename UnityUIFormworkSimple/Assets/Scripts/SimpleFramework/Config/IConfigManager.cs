@@ -16,20 +16,6 @@ using System;
 using System.Collections.Generic;
 namespace SimpleUIFramework
 {
-	public interface IConfigManager 
-	{
-        /// <summary>
-        /// 应用设置
-        /// 功能：得到键值对集合数据
-        /// </summary>
-	    Dictionary<string, string> AppSetting { get; }
-        /// <summary>
-        /// 得到配置文件（AppSetting）最大的数量
-        /// </summary>
-        /// <returns></returns>
-	    int GetAppSettingMaxNumber();
-	}
-
     [Serializable]
     internal class KeyValueInfo
     {
@@ -43,5 +29,17 @@ namespace SimpleUIFramework
         // 值
         public string Value = null;
     }
-
+    public interface IConfigManager 
+	{
+        /// <summary>
+        /// 应用设置
+        /// 功能：得到键值对集合数据
+        /// </summary>
+	    Dictionary<string, string> AppSetting { get; }
+        /// <summary>
+        /// 得到配置文件（AppSetting）最大的数量
+        /// </summary>
+        /// <returns></returns>
+	    int GetAppSettingMaxNumber();
+	}
 }

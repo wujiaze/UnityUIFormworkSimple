@@ -22,19 +22,19 @@ namespace DemoProject
         public void Awake()
         {
             // 定义本窗体的性质(默认值可以不写)
-            CurrentUiType.UIForms_Type = UIFormsType.Normal;
-            CurrentUiType.UIForms_ShowMode = UIFormShowMode.HideOther;
-            CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Lucency;
+            CurrentUiType.UiFormsType = UIFormsType.Normal;
+            CurrentUiType.UiFormsShowMode = UIFormShowMode.HideOther;
+            CurrentUiType.UiFormsLucencyType = UIFormLucenyType.Lucency;
             CurrentUiType.IsClearStack = false;
             // 给按钮注册事件:进入主程
             RigisterButtonObjectEvent("BtnConfirm", () =>
             {
                 // 顺序不能换
-                OpenUIForm(ProjectConfig.MAIN_CITY_FORM); // 因为这个是Hideother属性
-                OpenUIForm(ProjectConfig.HERO_INFO_FORM);
+                ShowUiForm(ProjectConfig.MAIN_CITY_FORM); // 因为这个是Hideother属性
+                ShowUiForm(ProjectConfig.HERO_INFO_FORM);
             });
             // 给按钮注册事件：返回登录
-            RigisterButtonObjectEvent("BtnClose", () => CloseUIForm());
+            RigisterButtonObjectEvent("BtnClose", () => CloseUiForm());
         }
     }
 }

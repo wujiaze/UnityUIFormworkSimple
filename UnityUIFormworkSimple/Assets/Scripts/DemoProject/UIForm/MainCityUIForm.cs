@@ -20,13 +20,13 @@ namespace DemoProject
         private void Awake()
         {
             // 窗体性质
-            CurrentUiType.UIForms_ShowMode = UIFormShowMode.HideOther;
-            CurrentUiType.UIForms_LucencyType = UIFormLucenyType.Lucency;
-            CurrentUiType.UIForms_Type = UIFormsType.Normal;
+            CurrentUiType.UiFormsShowMode = UIFormShowMode.HideOther;
+            CurrentUiType.UiFormsLucencyType = UIFormLucenyType.Lucency;
+            CurrentUiType.UiFormsType = UIFormsType.Normal;
             // 事件注册
             RigisterButtonObjectEvent("BtnMarket", () =>
             {
-                OpenUIForm(ProjectConfig.MARKET_FORM);
+                ShowUiForm(ProjectConfig.MARKET_FORM);
             });
         }
 

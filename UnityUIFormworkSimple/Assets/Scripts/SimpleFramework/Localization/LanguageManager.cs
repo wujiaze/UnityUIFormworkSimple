@@ -20,66 +20,70 @@ namespace SimpleUIFramework
 {
     public enum LanguageType
     {
-        CN, // 中文
-        EN  // 英文
+        Cn, // 中文
+        En  // 英文
     }
     public class LanguageManager
     {
-        private static LanguageManager _Instance;
-        private static LanguageType currentType = LanguageType.CN;
-        private static Dictionary<string, string> _DicLanguageCache;
+        private static LanguageManager _instance;
+        private static LanguageType _currentType = LanguageType.Cn;
+        private static Dictionary<string, string> _dicLanguageCache;
         private LanguageManager()
         {
-            _DicLanguageCache =new Dictionary<string, string>();
+            _dicLanguageCache = new Dictionary<string, string>();
         }
 
         /// <summary>
         /// 得到本类的实例
         /// </summary>
         /// <returns></returns>
-        public static LanguageManager GetInstance() 
+        public static LanguageManager Instance
         {
-            if (_Instance == null)
+            get
             {
-                _Instance = new LanguageManager();
-                _Instance.SetLanguageType(currentType);
+                if (_instance == null)
+                {
+                    _instance = new LanguageManager();
+                    _instance.SetLanguageType(_currentType);
+                }
+                return _instance;
+
             }
-            return _Instance;
         }
 
         /// <summary>
         /// 设置语言类型
         /// </summary>
         /// <param name="type"></param>
-        public void SetLanguageType(LanguageType type) {
-            if (currentType != type)
+        public void SetLanguageType(LanguageType type)
+        {
+            if (_currentType != type)
             {
                 InitLanguageCache(type);
-                currentType = type;
+                _currentType = type;
             }
         }
 
         /// <summary>
         /// 初始化语言缓存集合
         /// </summary>
-        /// <param name="LanguagePath">语言json文件路径</param>
-        private  void InitLanguageCache(LanguageType type)
+        private void InitLanguageCache(LanguageType type)
         {
             string LanguagePath = null;
             switch (type)
             {
-                case LanguageType.CN:
+                case LanguageType.Cn:
                     LanguagePath = UIFrameSysDefine.PATH_LANGUAGE_CN;
                     break;
-                case LanguageType.EN:
+                case LanguageType.En:
                     LanguagePath = UIFrameSysDefine.PATH_LANGUAGE_EN;
                     break;
             }
             IConfigManager config = new ConfigManagerByJson(LanguagePath);
             if (config != null)
             {
-                _DicLanguageCache.Clear();
-                _DicLanguageCache = config.AppSetting;
+                _dicLanguageCache.Clear();
+                _dicLanguageCache = config.AppSetting;
             }
         }
 
@@ -87,15 +91,16 @@ namespace SimpleUIFramework
         /// <summary>
         /// 根据ID显示文本信息
         /// </summary>
-        /// <param name="languageID"></param>
+        /// <param name="languageId"></param>
         /// <returns></returns>
-        public string ShowCurrentText(string languageID)
+        public string ShowCurrentText(string languageId)
         {
-            if (string.IsNullOrEmpty(languageID)) return null;
-            if (_DicLanguageCache!= null && _DicLanguageCache.Count >= 1)
+            if (string.IsNullOrEmpty(languageId))
+                return null;
+            if (_dicLanguageCache != null && _dicLanguageCache.Count >= 1)
             {
-                string strQueryResult = String.Empty;
-                _DicLanguageCache.TryGetValue(languageID, out strQueryResult);
+                string strQueryResult;
+                _dicLanguageCache.TryGetValue(languageId, out strQueryResult);
                 if (!string.IsNullOrEmpty(strQueryResult))
                     return strQueryResult;
             }

@@ -11,18 +11,25 @@
  *
  *
  */
-using UnityEngine;
 namespace SimpleUIFramework
 {
     public class UIType
     {
         // UI窗体位置类型
-        public UIFormsType UIForms_Type = UIFormsType.Normal;
+        public UIFormsType UiFormsType;
         // UI窗体显示类型
-        public UIFormShowMode UIForms_ShowMode = UIFormShowMode.Normal;
+        public UIFormShowMode UiFormsShowMode;
         // UI窗体透明度类型
-        public UIFormLucenyType UIForms_LucencyType = UIFormLucenyType.Lucency;
-        // 是否清空 “栈集合”，直接关闭所有的【反向切换】窗体
-        public bool IsClearStack = false;
+        public UIFormLucenyType UiFormsLucencyType;
+        // 是否清空 “栈集合”，直接关闭所有的 [反向切换]窗体
+        public bool IsClearStack;
+
+        public UIType()
+        {
+            UiFormsType = UIFormsType.Normal;
+            UiFormsShowMode = UIFormShowMode.Normal;
+            UiFormsLucencyType = UIFormLucenyType.Lucency;
+            IsClearStack = false;
+        }
     }
 }
