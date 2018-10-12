@@ -57,12 +57,12 @@ namespace SimpleUIFramework
 
     /// <summary>
     /// UI窗体透明度类型  
-    /// 功能:只对 PopUp 窗体有效，其余窗体随意都可以
+    /// 功能:只对 PopUp 窗体有效，其余窗体随意都可以（因为对于其余类型不受影响）
     /// </summary>
     public enum UIFormLucenyType
     {
         /// <summary>
-        /// 完全透明，不能穿透
+        /// 完全透明，但不能穿透
         /// </summary>
         Lucency,
         /// <summary>
